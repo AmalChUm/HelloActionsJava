@@ -1,0 +1,29 @@
+name: Hello World with Java
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  hello-java:
+    name: Run the Java Hello World program
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Compile the Java program
+        run: javac Hello.java
+
+      - name: Run the Java program
+        env:
+          WHO_TO_GREET: 'GitHub Actions Student'
+        run: java Hello
