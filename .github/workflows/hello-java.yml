@@ -1,29 +1,52 @@
+# The name displayed for this workflow in the GitHub Actions tab.
 name: Hello World with Java
 
+# The events that start this workflow.
 on:
+  # Run automatically when code is pushed to the repository.
   push:
+    # Limit the automatic push trigger to the main branch.
     branches:
-      - main
+      - main # The branch that should trigger the workflow.
+  # Add a Run workflow button so a user can start it manually.
   workflow_dispatch:
 
+# A workflow contains one or more jobs.
 jobs:
+  # Internal identifier for this job. It is used inside this YAML file.
   hello-java:
+    # The friendly name shown for the job on the Actions page.
     name: Run the Java Hello World program
+    # Use a temporary Ubuntu virtual machine supplied by GitHub.
     runs-on: ubuntu-latest
+    # Steps are executed from top to bottom.
     steps:
+      # Download the repository files onto the virtual machine.
       - name: Check out the repository
+        # Use GitHub's official checkout action, version 4.
         uses: actions/checkout@v4
 
+      # Install and configure the Java Development Kit for this job.
       - name: Set up Java
+        # Use GitHub's official Java setup action, version 4.
         uses: actions/setup-java@v4
+        # Configuration values for the Java setup action.
         with:
+          # Use the Eclipse Temurin distribution of OpenJDK.
           distribution: temurin
+          # Select Java version 17 for compilation and execution.
           java-version: '17'
 
+      # Compile the Java source file into Hello.class.
       - name: Compile the Java program
+        # Run a shell command on the GitHub-hosted Ubuntu machine.
         run: javac Hello.java
 
+      # Execute the compiled Java class.
       - name: Run the Java program
+        # Environment variables are available to the Java program.
         env:
+          # Hello.java reads this value with System.getenv().
           WHO_TO_GREET: 'GitHub Actions Student'
+        # Run the class named Hello; do not include the .class extension.
         run: java Hello
